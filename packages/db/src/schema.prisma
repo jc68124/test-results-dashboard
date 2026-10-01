@@ -1,0 +1,9 @@
+generator cloudflare_client {
+  provider = "prisma-client-js"
+  runtime  = "cloudflare"
+  output   = "../dist"
+}
+
+datasource db {
+  provider = "sqlite"
+}

@@ -1,0 +1,147 @@
+model Run {
+  id               Int     @id @default(autoincrement())
+  publicId         String  @unique
+  projectId        Int
+  name             String?
+  framework        String
+  frameworkVersion String
+  browser          String
+  browserVersion   String
+  os               String
+
+  branch        String?
+  commitSha     String?
+  commitMessage String?
+  machineId     String?
+  shardId       String?
+  group         String?
+  parallel      Boolean?
+
+  status         String    @default("running")
+  startedAt      DateTime
+  endedAt        DateTime?
+  lastActivityAt DateTime  @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  specs      Spec[]
+  attributes RunAttribute[]
+  project    Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, startedAt])
+  @@index([projectId, status])
+}
+
+model RunAttribute {
+  id            Int     @id @default(autoincrement())
+  runId         Int
+  key           String
+  value         String
+  showOnRunList Boolean @default(false)
+  position      Int
+
+  run Run @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@unique([runId, key])
+  @@unique([runId, position])
+  @@index([runId, showOnRunList])
+  @@index([key, value, runId])
+}
+
+model Spec {
+  id        Int      @id @default(autoincrement())
+  runId     Int
+  filename  String
+  tests     Int
+  passed    Int
+  failed    Int
+  pending   Int
+  skipped   Int
+  duration  Int
+  startedAt DateTime
+  endedAt   DateTime
+
+  status  String  @default("running")
+  message String?
+
+  run       Run        @relation(fields: [runId], references: [id], onDelete: Cascade)
+  specTests SpecTest[]
+
+  @@unique([runId, filename])
+}
+
+model SpecTest {
+  id       Int    @id @default(autoincrement())
+  specId   Int
+  status   String
+  duration Int
+
+  message String?
+  trace   String?
+
+  spec             Spec                @relation(fields: [specId], references: [id], onDelete: Cascade)
+  titleParts       SpecTestTitlePart[]
+  specTestAttempts SpecTestAttempt[]
+
+  @@index([specId])
+}
+
+model SpecTestTitlePart {
+  id         Int    @id @default(autoincrement())
+  specTestId Int
+  position   Int
+  value      String
+
+  specTest SpecTest @relation(fields: [specTestId], references: [id], onDelete: Cascade)
+
+  @@unique([specTestId, position])
+  @@index([position, value])
+  @@index([value])
+}
+
+model SpecTestAttempt {
+  id         Int    @id @default(autoincrement())
+  specTestId Int
+  status     String
+
+  message String?
+  trace   String?
+
+  specTest SpecTest @relation(fields: [specTestId], references: [id], onDelete: Cascade)
+
+  @@index([specTestId])
+}
+
+model Project {
+  id        Int      @id @default(autoincrement())
+  publicId  String   @unique @default(uuid())
+  name      String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  runs       Run[]
+  ingestKeys IngestKey[]
+}
+
+model IngestKey {
+  id       Int    @id @default(autoincrement())
+  publicId String @unique @default(uuid())
+
+  projectId Int
+  name      String
+  prefix    String
+  keyHash   String @unique
+
+  lastUsedAt DateTime?
+  expiresAt  DateTime?
+  revokedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, name])
+}

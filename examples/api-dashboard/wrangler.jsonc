@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "test-results-dashboard-api-dashboard",
+  "compatibility_date": "2026-01-28",
+  "main": "src/index.ts",
+  "workers_dev": false,
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "test_results_dashboard",
+      "database_id": "1e658d93-4b69-460f-adac-ccb396859581",
+      "remote": true
+    }
+  ]
+}

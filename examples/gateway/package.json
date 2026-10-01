@@ -1,0 +1,21 @@
+{
+	"name": "@jc68124/test-results-dashboard-gateway-example",
+	"version": "0.0.0",
+	"private": true,
+    "type": "module",
+	"scripts": {
+		"deploy": "wrangler deploy",
+		"dev": "wrangler dev",
+		"start": "wrangler dev",
+		"cf-typegen": "wrangler types",
+		"build": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"@types/node": "24.10.0",
+		"typescript": "7.0.2",
+		"wrangler": "4.145.0"
+	},
+	"dependencies": {
+		"@jc68124/auth-gateway-cf": "0.0.1"
+	}
+}

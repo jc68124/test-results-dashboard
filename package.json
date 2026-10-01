@@ -1,0 +1,21 @@
+{
+  "name": "@jc68124/test-results-dashboard",
+  "private": true,
+  "packageManager": "pnpm@11.7.0",
+  "scripts": {
+    "build:packages": "turbo build --continue=always --filter='./packages/*'",
+    "build:examples": "turbo build --continue=always --filter='./examples/*'",
+    "build": "turbo build --continue=always",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "3.0.3",
+    "turbo": "2.11.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jc68124/test-results-dashboard.git"
+  }
+}

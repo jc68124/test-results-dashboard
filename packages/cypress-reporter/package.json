@@ -1,0 +1,35 @@
+{
+  "name": "@jc68124/test-results-dashboard-cypress-reporter",
+  "version": "0.0.1",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@jc68124/test-results-dashboard-core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.3",
+    "cypress": "16.1.1",
+    "typescript": "7.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jc68124/test-results-dashboard.git"
+  }
+}

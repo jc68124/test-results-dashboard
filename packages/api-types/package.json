@@ -1,0 +1,36 @@
+{
+  "name": "@jc68124/test-results-dashboard-api-types",
+  "version": "0.0.1",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist"
+  },
+  "devDependencies": {
+    "rimraf": "6.1.3",
+    "typescript": "7.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jc68124/test-results-dashboard.git"
+  },
+  "dependencies": {
+    "@jc68124/test-results-dashboard-core": "workspace:*",
+    "zod": "4.6.5"
+  }
+}

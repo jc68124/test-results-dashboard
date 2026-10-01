@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  release:
+    name: Release Packages
+    runs-on: ubuntu-latest
+
+    outputs:
+      published: ${{ steps.changesets.outputs.published }}
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+        with:
+          cache: true
+
+      - run: pnpm install
+
+      - run: pnpm run build:packages
+
+      - uses: changesets/action@v1
+        with:
+          version: pnpm run version-packages
+          publish: pnpm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

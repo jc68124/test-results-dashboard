@@ -1,0 +1,16 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.4/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "master",
+  "updateInternalDependencies": "patch",
+  "ignore": [
+    "@jc68124/test-results-dashboard-web-example",
+    "@jc68124/test-results-dashboard-api-ingest-example",
+    "@jc68124/test-results-dashboard-api-dashboard-example",
+    "@jc68124/test-results-dashboard-gateway-example"
+  ]
+}
