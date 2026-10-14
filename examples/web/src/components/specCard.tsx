@@ -2,7 +2,6 @@
 
 import { Badge } from '@/components/catalyst/badge';
 import { RunResults } from '@/components/runResults';
-import { FullSpec } from '@jc68124/test-results-dashboard-api-types';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import {
 	CheckCircleIcon,
@@ -14,6 +13,7 @@ import {
 	StopCircleIcon,
 	XCircleIcon,
 } from '@heroicons/react/20/solid';
+import { FullSpec } from '@jc68124/test-results-dashboard-api-types';
 import clsx from 'clsx';
 
 type SpecTest = FullSpec['specTests'][number];
@@ -78,8 +78,19 @@ export function SpecCard({ spec }: SpecCardProps) {
 							</div>
 						) : (
 							<div className="divide-y divide-zinc-950/5 dark:divide-white/5">
-								{spec.specTests.map((test) => (
-									<SpecTestRow key={test.id} test={test} />
+								{groupTestsBySuite(spec.specTests).map(({ key, title, tests }) => (
+									<section key={key} aria-label={title || 'Tests'}>
+										{title && (
+											<h3 className="bg-zinc-50 px-4 py-3 text-xs font-semibold wrap-break-word text-zinc-600 sm:px-6 dark:bg-zinc-950/40 dark:text-zinc-300">
+												{title}
+											</h3>
+										)}
+										<div className="divide-y divide-zinc-950/5 dark:divide-white/5">
+											{tests.map((test) => (
+												<SpecTestRow key={test.id} test={test} />
+											))}
+										</div>
+									</section>
 								))}
 							</div>
 						)}
@@ -88,6 +99,28 @@ export function SpecCard({ spec }: SpecCardProps) {
 			)}
 		</Disclosure>
 	);
+}
+
+function groupTestsBySuite(tests: SpecTest[]) {
+	const groups = new Map<string, { key: string; title: string; tests: SpecTest[] }>();
+
+	for (const test of tests) {
+		const suitePath = [...test.titleParts]
+			.sort((a, b) => a.position - b.position)
+			.slice(0, -1)
+			.map((part) => part.value);
+		// Match the actual describe parts, including names containing the separator.
+		const key = JSON.stringify(suitePath);
+		const group = groups.get(key);
+
+		if (group) {
+			group.tests.push(test);
+		} else {
+			groups.set(key, { key, title: suitePath.join(' › '), tests: [test] });
+		}
+	}
+
+	return [...groups.values()];
 }
 
 function SpecTestRow({ test }: { test: SpecTest }) {
@@ -120,22 +153,12 @@ function SpecTestSummary({ test, expandable, open = false }: { test: SpecTest; e
 	const orderedParts = [...test.titleParts].sort((a, b) => a.position - b.position);
 
 	const testName = orderedParts.at(-1)?.value ?? 'Untitled test';
-	const suitePath = orderedParts.slice(0, -1);
 
 	return (
 		<div className="flex items-start gap-3">
 			<StatusIcon status={test.status} className="mt-0.5 size-5 shrink-0" />
 
 			<div className="min-w-0 flex-1">
-				{suitePath.length > 0 && (
-					<div
-						className="truncate text-xs text-zinc-500 dark:text-zinc-400"
-						title={suitePath.map((part) => part.value).join(' › ')}
-					>
-						{suitePath.map((part) => part.value).join(' › ')}
-					</div>
-				)}
-
 				<div className="truncate text-sm font-medium text-zinc-950 dark:text-white" title={testName}>
 					{testName}
 				</div>
