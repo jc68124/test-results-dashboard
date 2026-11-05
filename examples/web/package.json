@@ -12,10 +12,10 @@
 		"lint": "eslint ."
 	},
 	"dependencies": {
-		"@jc68124/test-results-dashboard-api-types": "workspace:*",
 		"@headlessui/react": "2.2.10",
 		"@heroicons/react": "2.2.0",
-		"@opennextjs/cloudflare": "1.20.7",
+		"@jc68124/test-results-dashboard-api-types": "workspace:*",
+		"@opennextjs/cloudflare": "1.20.12",
 		"clsx": "2.1.1",
 		"motion": "12.40.0",
 		"next": "16.4.1",
