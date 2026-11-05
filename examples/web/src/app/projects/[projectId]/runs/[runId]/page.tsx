@@ -6,6 +6,7 @@ import RunRefreshButton from './runRefreshButton';
 import RunSummary from './runSummary';
 import SpecResultFilterSelect from './specResultFilter';
 import SpecsTable from './specsList';
+import CopyRunResults from './copyRunResults';
 
 export const metadata: Metadata = {
 	title: 'Project Run Details',
@@ -23,6 +24,7 @@ export default function ProjectRunDetails() {
 				</div>
 
 				<div className="flex items-center gap-2">
+    				<CopyRunResults />
 					<SpecResultFilterSelect />
 					<RunRefreshButton />
 				</div>
