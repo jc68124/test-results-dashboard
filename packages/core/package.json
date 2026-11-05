@@ -30,6 +30,6 @@
     "url": "git+https://github.com/jc68124/test-results-dashboard.git"
   },
   "dependencies": {
-    "zod": "4.6.5"
+    "zod": "4.6.6"
   }
 }
